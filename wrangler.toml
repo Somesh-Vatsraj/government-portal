@@ -11,7 +11,7 @@ not_found_handling = "single-page-application"
 [[d1_databases]]
 binding = "DB"
 database_name = "gov-portal-db"
-database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
+database_id = "e937a542-4d91-4c00-884a-6d0f4afc4131"
 
 [vars]
 IMAGEKIT_PUBLIC_KEY = ""
