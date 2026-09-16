@@ -9,11 +9,11 @@ keep_vars = true
 # Environment Variables
 # ============================================================
 [vars]
-AUTH_SECRET = "a7f3c9e2b8d4f1a6c5e9b2d7f4a8c3e6b9d2f5a8c1e4b7d0f3a6c9e2b5d8f1a4"
-IMAGEKIT_PRIVATE_KEY = "private_W4heGM/F61JWhrH9Ws3gJ6HNlcU="
-IMAGEKIT_PUBLIC_KEY = "public_Uz2lL64W7ii800m9KVcRu9p+8w0="
+AUTH_SECRET = "a7f3c9e2b8d4f1a6c5e9b2d7f4a8c3e6b2f5a8c1e4b7d0f3a6c9e2b5d8f1a4"
+IMAGEKIT_PRIVATE_KEY = "private_W4heGM/F61JWhrHs3gJ6HNlcU="
+IMAGEKIT_PUBLIC_KEY = "public_Uz2lL64W7ii800m9cRu9p+8w0="
 IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/m15kd0rkyd"
-SITE_URL = "https://government-portal.someshsoftwareengineer-233.workers.dev"
+SITE_URL = "https://government-portal.-233.workers.dev"
 
 # ============================================================
 # D1 Database
