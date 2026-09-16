@@ -13,10 +13,6 @@ binding = "DB"
 database_name = "gov-portal-db"
 database_id = "e937a542-4d91-4c00-884a-6d0f4afc4131"
 
-[vars]
-IMAGEKIT_PUBLIC_KEY = ""
-IMAGEKIT_URL_ENDPOINT = ""
-SITE_URL = ""
 
 # Set secrets via: wrangler secret put IMAGEKIT_PRIVATE_KEY
 #                  wrangler secret put AUTH_SECRET
