@@ -2,6 +2,8 @@ name = "government-portal"
 main = "worker/index.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+# ⚠️ Ye line add karo — dashboard secrets ko preserve karta hai
+keep_vars = true
 
 [[d1_databases]]
 binding = "DB"
