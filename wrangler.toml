@@ -3,16 +3,16 @@ main = "worker/index.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-[assets]
-directory = "./dist"
-binding = "ASSETS"
-not_found_handling = "single-page-application"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "gov-portal-db"
 database_id = "e937a542-4d91-4c00-884a-6d0f4afc4131"
 
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
 
-# Set secrets via: wrangler secret put IMAGEKIT_PRIVATE_KEY
-#                  wrangler secret put AUTH_SECRET
+# Agar ye section hai, to secret --env production ke saath set karo
+[env.production]
+name = "government-portal"
