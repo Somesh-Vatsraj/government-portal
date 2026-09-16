@@ -23,6 +23,7 @@ schemes and news portal. Built with **React + Vite** on the frontend and
 - Secure auth (PBKDF2 + signed tokens).
 
 ---
+<img width="1610" height="902" alt="Screenshot 2026-09-16 105401" src="https://github.com/user-attachments/assets/1228a029-7de8-44db-82e6-3543eff3f228" />
 
 ## 2. Tech Stack
 
@@ -97,6 +98,7 @@ Vite serves `http://localhost:5173` and proxies `/api` to the Worker at
 `http://127.0.0.1:8787`.
 
 ---
+<img width="1604" height="907" alt="Screenshot 2026-09-16 105335" src="https://github.com/user-attachments/assets/37720113-00ad-4be5-92be-4dca3973b2d1" />
 
 ## 6. First Admin Account
 
