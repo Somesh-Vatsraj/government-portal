@@ -23,20 +23,50 @@ export default {
     }
 
     try {
-      // robots.txt
+      // ---------- HEALTH / DIAGNOSTIC ----------
+      if (path === '/api/health') {
+        const diag = {
+          ok: true,
+          has_db: !!env.DB,
+          has_auth_secret: !!env.AUTH_SECRET,
+          has_imagekit: !!env.IMAGEKIT_PRIVATE_KEY,
+          has_assets: !!env.ASSETS
+        };
+        if (env.DB) {
+          try {
+            const t = await env.DB.prepare(
+              "SELECT name FROM sqlite_master WHERE type='table'"
+            ).all();
+            diag.tables = t.results.map((r) => r.name);
+            diag.users_table = diag.tables.includes('users');
+            diag.posts_table = diag.tables.includes('posts');
+            if (diag.users_table) {
+              const c = await env.DB.prepare('SELECT COUNT(*) AS c FROM users').first();
+              diag.user_count = c.c;
+            }
+          } catch (e) {
+            diag.db_error = String(e.message || e);
+          }
+        }
+        return new Response(JSON.stringify(diag, null, 2), {
+          headers: { 'Content-Type': 'application/json', ...CORS }
+        });
+      }
+
+      // ---------- robots.txt ----------
       if (path === '/robots.txt') {
         const body = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/private\n\nSitemap: ${url.origin}/sitemap.xml\n`;
         return new Response(body, { headers: { 'Content-Type': 'text/plain' } });
       }
 
-      // sitemap.xml
+      // ---------- sitemap.xml ----------
       if (path === '/sitemap.xml') {
         return await sitemap(url.origin, env);
       }
 
-      // API
+      // ---------- API ----------
       if (path.startsWith('/api/')) {
-        const apiPath = path.slice(4); // e.g. /auth/login
+        const apiPath = path.slice(4);
         let res;
 
         if (apiPath.startsWith('/auth')) {
@@ -68,14 +98,32 @@ export default {
         return new Response(res.body, { status: res.status, headers });
       }
 
-      // Static assets
-      return await env.ASSETS.fetch(request);
+      // ---------- Static assets ----------
+      if (env.ASSETS) {
+        return await env.ASSETS.fetch(request);
+      }
+      return new Response('Not found', { status: 404 });
     } catch (e) {
-      console.error('Worker error:', e);
-      return new Response(JSON.stringify({ error: 'Internal server error' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json', ...CORS }
-      });
+      // Log full stack to wrangler console
+      console.error('=== WORKER ERROR ===');
+      console.error('Path:', path);
+      console.error('Method:', request.method);
+      console.error('Message:', e && e.message);
+      console.error('Stack:', e && e.stack);
+
+      return new Response(
+        JSON.stringify({
+          error: 'Internal server error',
+          hint:
+            'Check the wrangler dev terminal for the full stack trace. ' +
+            'Common causes: D1 migrations not applied, AUTH_SECRET missing, or DB binding missing.',
+          path
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json', ...CORS }
+        }
+      );
     }
   }
 };
@@ -121,8 +169,8 @@ async function sitemap(origin, env) {
     const lastmod = (p.updated_at || '').slice(0, 10);
     urls.push(
       `<url><loc>${origin}/${p.category_slug}/${p.slug}</loc>` +
-      (lastmod ? `<lastmod>${lastmod}</lastmod>` : '') +
-      `<changefreq>weekly</changefreq><priority>0.7</priority></url>`
+        (lastmod ? `<lastmod>${lastmod}</lastmod>` : '') +
+        `<changefreq>weekly</changefreq><priority>0.7</priority></url>`
     );
   }
 
